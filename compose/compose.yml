@@ -1,0 +1,78 @@
+version: "3.7"
+
+services:
+  app:
+    image: castopod/app:latest
+    container_name: "${ORG_NAME}_${STACK_NAME}_app"
+    volumes:
+      - ${HOME}/srv/${ORG_NAME}/${STACK_NAME}/media:/var/www/castopod/public/media
+    # env_file: ${HOME}/srv/${ORG_NAME}/${STACK_NAME}/git/compose/.env
+    networks:
+      - castopod-app
+      - castopod-db
+    restart: unless-stopped
+
+  web-server:
+    image: castopod/web-server:latest
+    container_name: "${ORG_NAME}_${STACK_NAME}_web-server"
+    # env_file: ${HOME}/srv/${ORG_NAME}/${STACK_NAME}/git/compose/.env
+    volumes:
+      - ${HOME}/srv/${ORG_NAME}/${STACK_NAME}/media:/var/www/html/media
+    networks:
+      - castopod-app
+      - proxy
+#     - ipv6-net
+    ports:
+      - ${CP_HTTP_PORT:-8482}:80
+    restart: unless-stopped
+    labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.tape.rule=Host(`${DOMAIN}`)"
+        - "traefik.http.routers.tape.entrypoints=websecure"
+        - "traefik.docker.network=proxy"
+
+  mariadb:
+    image: mariadb:10.5
+    container_name: "${ORG_NAME}_${STACK_NAME}_mariadb"
+    networks:
+      - castopod-db
+    volumes:
+      - ${HOME}/srv/${ORG_NAME}/${STACK_NAME}/db:/var/lib/mysql
+    # env_file: ${HOME}/srv/${ORG_NAME}/${STACK_NAME}/git/compose/.env
+    restart: unless-stopped
+
+  redis:
+    image: redis:7.0-alpine
+    container_name: "${ORG_NAME}_${STACK_NAME}_redis"
+    volumes:
+      - ${HOME}/srv/${ORG_NAME}/${STACK_NAME}/cache:/data
+    networks:
+      - castopod-app
+    command: "--requirepass ${CP_REDIS_PASSWORD}"
+    restart: unless-stopped
+
+  # this container is optional
+  # add this if you want to use the videoclips feature
+  #video-clipper:
+  #  image: castopod/video-clipper:latest
+  #  container_name: "${ORG_NAME}_${STACK_NAME}_video-clipper"
+  #  volumes:
+  #    - ${HOME}/srv/${ORG_NAME}/${STACK_NAME}/media:/opt/castopod/public/media
+  #  env_file: ${HOME}/srv/${ORG_NAME}/${STACK_NAME}/git/compose/.env
+  #  networks:
+  #    - castopod-db
+  #  restart: unless-stopped
+
+volumes:
+  castopod-media:
+  castopod-db:
+  castopod-cache:
+
+networks:
+  castopod-app:
+  castopod-db:
+  proxy:
+    external: true
+#  ipv6-net:
+#    external: true
+#    name: ipv6-net
