@@ -18,7 +18,7 @@ secrets-manager -d
 
 # Launch containers
 cd compose
-podman compose up --detach reverse-proxy app web-server mariadb redis
+podman compose up --detach reverse-proxy app web-server db redis
 ```
 ## Prerequisites
 ### (Optionnal) Terraform
