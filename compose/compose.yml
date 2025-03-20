@@ -4,7 +4,7 @@ services:
     container_name: "${ORG_NAME}_${STACK_NAME}_app"
     volumes:
       - ${HOME}/srv/${ORG_NAME}/${STACK_NAME}/media:/var/www/castopod/public/media
-    # env_file: ${HOME}/srv/${ORG_NAME}/${STACK_NAME}/git/compose/.env
+    env_file: ${HOME}/srv/${ORG_NAME}/${STACK_NAME}/git/compose/.env
     networks:
       - castopod-app
       - castopod-db
@@ -13,7 +13,7 @@ services:
   web-server:
     image: castopod/web-server:latest
     container_name: "${ORG_NAME}_${STACK_NAME}_web-server"
-    # env_file: ${HOME}/srv/${ORG_NAME}/${STACK_NAME}/git/compose/.env
+    env_file: ${HOME}/srv/${ORG_NAME}/${STACK_NAME}/git/compose/.env
     volumes:
       - ${HOME}/srv/${ORG_NAME}/${STACK_NAME}/media:/var/www/html/media
     networks:
