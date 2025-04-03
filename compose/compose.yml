@@ -81,6 +81,7 @@ networks:
   castopod-db:
   proxy:
     external: true
+    name: proxy
 #  ipv6-net:
 #    external: true
 #    name: ipv6-net
