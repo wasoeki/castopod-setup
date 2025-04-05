@@ -1,33 +1,51 @@
 services:
-  app:
-    image: castopod/app:latest
-    container_name: "${ORG_NAME}_${STACK_NAME}_app"
+#   app:
+#     image: castopod/app:latest
+#     container_name: "${ORG_NAME}_${STACK_NAME}_app"
+#     volumes:
+#       - ${HOME}/srv/${ORG_NAME}/${STACK_NAME}/media:/var/www/castopod/public/media
+#     env_file: ${HOME}/srv/${ORG_NAME}/${STACK_NAME}/git/compose/.env
+#     networks:
+#       - castopod-app
+#       - castopod-db
+#     restart: unless-stopped
+
+#   web-server:
+#     image: castopod/web-server:latest
+#     container_name: "${ORG_NAME}_${STACK_NAME}_web-server"
+#     env_file: ${HOME}/srv/${ORG_NAME}/${STACK_NAME}/git/compose/.env
+#     volumes:
+#       - ${HOME}/srv/${ORG_NAME}/${STACK_NAME}/media:/var/www/html/media
+#     networks:
+#       - castopod-app
+#       - proxy
+# #     - ipv6-net
+#     ports:
+#       - ${CP_HTTP_PORT:-8482}:80
+#     restart: unless-stopped
+#     labels:
+#         - "traefik.enable=true"
+#         - "traefik.http.routers.tape.rule=Host(`${DOMAIN}`)"
+#         - "traefik.http.routers.tape.entrypoints=websecure"
+#         - "traefik.docker.network=proxy"
+  castopod:
+    image: castopod/castopod:latest
+    container_name: "${ORG_NAME}_${STACK_NAME}_castopod"
     volumes:
       - ${HOME}/srv/${ORG_NAME}/${STACK_NAME}/media:/var/www/castopod/public/media
     env_file: ${HOME}/srv/${ORG_NAME}/${STACK_NAME}/git/compose/.env
     networks:
-      - castopod-app
+      - castopod
       - castopod-db
-    restart: unless-stopped
-
-  web-server:
-    image: castopod/web-server:latest
-    container_name: "${ORG_NAME}_${STACK_NAME}_web-server"
-    env_file: ${HOME}/srv/${ORG_NAME}/${STACK_NAME}/git/compose/.env
-    volumes:
-      - ${HOME}/srv/${ORG_NAME}/${STACK_NAME}/media:/var/www/html/media
-    networks:
-      - castopod-app
-      - proxy
-#     - ipv6-net
     ports:
-      - ${CP_HTTP_PORT:-8482}:80
+      - ${CP_HTTP_PORT:-8482}:8000
     restart: unless-stopped
     labels:
         - "traefik.enable=true"
         - "traefik.http.routers.tape.rule=Host(`${DOMAIN}`)"
         - "traefik.http.routers.tape.entrypoints=websecure"
         - "traefik.docker.network=proxy"
+
 
   db:
     image: mariadb:10.5
@@ -55,7 +73,8 @@ services:
     volumes:
       - ${HOME}/srv/${ORG_NAME}/${STACK_NAME}/cache:/data
     networks:
-      - castopod-app
+      # - castopod-app
+      - castopod
     command: "--requirepass ${CP_REDIS_PASSWORD}"
     restart: unless-stopped
 
@@ -71,13 +90,14 @@ services:
   #    - castopod-db
   #  restart: unless-stopped
 
-volumes:
-  castopod-media:
-  castopod-db:
-  castopod-cache:
+# volumes:
+#   castopod-media:
+#   castopod-db:
+#   castopod-cache:
 
 networks:
-  castopod-app:
+  # castopod-app:
+  castopod:
   castopod-db:
   proxy:
     external: true
