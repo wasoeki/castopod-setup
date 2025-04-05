@@ -37,6 +37,7 @@ services:
     networks:
       - castopod
       - castopod-db
+      - proxy
     ports:
       - ${CP_HTTP_PORT:-8482}:8000
     restart: unless-stopped
