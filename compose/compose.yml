@@ -25,7 +25,7 @@ services:
 #     restart: unless-stopped
 #     labels:
 #         - "traefik.enable=true"
-#         - "traefik.http.routers.tape.rule=Host(`${DOMAIN}`)${ADDITIONAL_DOMAINS}"
+#         - "traefik.http.routers.tape.rule=Host(`${DOMAIN}`)"
 #         - "traefik.http.routers.tape.entrypoints=websecure"
 #         - "traefik.docker.network=proxy"
   castopod:
@@ -43,7 +43,7 @@ services:
     restart: unless-stopped
     labels:
         - "traefik.enable=true"
-        - "traefik.http.routers.tape.rule=Host(`${DOMAIN}`)${ADDITIONAL_DOMAINS}"
+        - "traefik.http.routers.tape.rule=Host(`${DOMAIN}`)"
         - "traefik.http.routers.tape.entrypoints=websecure"
         - "traefik.docker.network=proxy"
 
