@@ -46,6 +46,7 @@ services:
         - "traefik.http.routers.tape.rule=Host(`${DOMAIN}`)"
         - "traefik.http.routers.tape.entrypoints=websecure"
         - "traefik.docker.network=proxy"
+        - "traefik.http.routers.tape.tls.certresolver=letsencrypt"
 
 
   db:
