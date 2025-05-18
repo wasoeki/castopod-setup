@@ -55,11 +55,11 @@ services:
     environment:
       - PUID=${PUID:-1000}
       - PGID=${PGID:-27}
-      - MARIADB_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-123456789}
+      - MARIADB_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD:-123456789}
       - TZ=${TZ:-Europe/London}
-      - MARIADB_DATABASE=${MYSQL_DATABASE:-castopod}
-      - MARIADB_USER=${MYSQL_USER:-castopod}
-      - MARIADB_PASSWORD=${MYSQL_PASSWORD:-123456789}
+      - MARIADB_DATABASE=${MARIADB_DATABASE:-castopod}
+      - MARIADB_USER=${MARIADB_USER:-castopod}
+      - MARIADB_PASSWORD=${MARIADB_PASSWORD:-123456789}
     ports:
       - ${MARIADB_PORT:-7706}:3306
     networks:
