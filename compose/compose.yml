@@ -29,7 +29,7 @@ services:
 #         - "traefik.http.routers.tape.entrypoints=websecure"
 #         - "traefik.docker.network=proxy"
   castopod:
-    image: castopod/castopod:latest
+    image: castopod/castopod:latest #1.13.4
     container_name: "${ORG_NAME}_${STACK_NAME}_castopod"
     volumes:
       - ${HOME}/srv/${ORG_NAME}/${STACK_NAME}/media:/var/www/castopod/public/media
