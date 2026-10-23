@@ -20,6 +20,30 @@ secrets-manager -d
 cd compose
 podman compose up --detach reverse-proxy app web-server db redis
 ```
+
+## Update manually Castopod container version
+
+Go step by step from the latest minor version of a major version to the upper one.
+See versions here : https://hub.docker.com/r/castopod/castopod/tags
+See breaking changes here to check if actions are required : https://code.castopod.org/adaures/castopod/-/releases
+For example :
+> 1.13.4 -> 1.13.8 -> 1.14.1 -> 1.15.6
+
+```shell
+# Go to the compose folder and then edit the version of the castopod image to the desired one (step by step)
+nano compose.yml
+# Then stop only the castopod container
+sudo -E docker compose down castopod
+# Pull the latest version of castopod
+sudo -E docker compose pull castopod
+# And restart it with compose to use the desired version
+sudo -E docker compose up -d castopod
+# See what happens inside the container to make sure it is ready
+sudo -E docker logs $container_name
+# Finally update castopod database
+sudo -E docker exec $container_name sh -c "php spark castopod:database-update"
+``` 
+
 ## Prerequisites
 ### (Optionnal) Terraform
 - `terraform`

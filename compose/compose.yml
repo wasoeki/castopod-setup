@@ -43,6 +43,7 @@ services:
     ports:
       # Change in 1.15.0
       # - ${CP_HTTP_PORT:-8482}:8000
+      - ${CP_HTTPS_PORT:-8483}:8443
       - ${CP_HTTP_PORT:-8482}:8080
     restart: unless-stopped
     labels:
