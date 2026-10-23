@@ -29,12 +29,12 @@ services:
 #         - "traefik.http.routers.tape.entrypoints=websecure"
 #         - "traefik.docker.network=proxy"
   castopod:
-    image: castopod/castopod:latest #1.13.4 to 1.15.6
+    image: castopod/castopod:1.14.1 #1.13.4 to 1.15.6
     container_name: "${ORG_NAME}_${STACK_NAME}_castopod"
     volumes:
       # Change in 1.15.0
-      # - ${HOME}/srv/${ORG_NAME}/${STACK_NAME}/media:/var/www/castopod/public/media
-      - ${HOME}/srv/${ORG_NAME}/${STACK_NAME}/media:/app/public/media
+      - ${HOME}/srv/${ORG_NAME}/${STACK_NAME}/media:/var/www/castopod/public/media
+      # - ${HOME}/srv/${ORG_NAME}/${STACK_NAME}/media:/app/public/media
     env_file: ${HOME}/srv/${ORG_NAME}/${STACK_NAME}/git/compose/.env
     networks:
       - castopod
@@ -42,9 +42,9 @@ services:
       - proxy
     ports:
       # Change in 1.15.0
-      # - ${CP_HTTP_PORT:-8482}:8000
-      - ${CP_HTTPS_PORT:-8483}:8443
-      - ${CP_HTTP_PORT:-8482}:8080
+      - ${CP_HTTP_PORT:-8482}:8000
+      # - ${CP_HTTPS_PORT:-8483}:8443
+      # - ${CP_HTTP_PORT:-8482}:8080
     restart: unless-stopped
     labels:
         - "traefik.enable=true"
